@@ -1,9 +1,28 @@
 # API REST — Image Duplicate Manager
 
-> **Estado:** borrador. Se refinará en la Fase 8 (API REST). Contrato base aprobado en el plan v1.3.
+> **Estado:** API REST básica implementada en la **Fase 8** (análisis, grupos, imágenes).
+> Los endpoints de explorador de carpetas, vistas previas y operaciones sobre archivos se
+> implementarán en Fases 9-12.
 
 Todas las rutas bajo `/api`. Respuestas JSON. Servidor local `http://localhost:8080`.
 El **código** de los campos es inglés; las **descripciones** mostradas al usuario son español.
+
+## Endpoints implementados
+
+```text
+GET    /api/health                        Estado del servicio
+
+POST   /api/scans                         Inicia análisis asíncrono  { rootPath }  -> 202
+GET    /api/scans                         Lista de análisis
+GET    /api/scans/{id}                    Detalle de un análisis
+POST   /api/scans/{id}/cancel             Solicita cancelación
+POST   /api/scans/{id}/detect             Ejecuta detección/agrupación
+
+GET    /api/scans/{scanId}/groups         Grupos de un análisis
+GET    /api/groups/{id}                   Detalle de grupo (miembros + recomendada)
+
+GET    /api/images/{id}                   Metadatos de una imagen
+```
 
 ## Esbozo de endpoints
 

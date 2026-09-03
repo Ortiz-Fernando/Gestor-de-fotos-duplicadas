@@ -5,7 +5,7 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 8 — API REST (controllers, DTOs, validación, excepciones, MockMvc).**
+**Fase 9 — Frontend (React + TypeScript + Vite, interfaz en español).**
 *Pendiente de iniciar.*
 
 ## Funcionalidades completadas
@@ -19,7 +19,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 4 | Exploración: `ScanService` (walk recursivo, filtro D4, errores tolerantes, progreso, cancelación, persistencia por lotes). Tests (6) en verde | ✅ |
 | 5 | SHA-256: `hashing/Sha256Hasher` (streaming, buffer 8 MB) + `Sha256CacheValidator` + `HashingException`. Tests (9) en verde | ✅ |
 | 6 | pHash perceptual: `hashing/ImagePerceptualHasher`, `DctPhashHasher` (DCT-64), `HammingDistance`, `ExifOrientationNormalizer`. Tests (12) en verde | ✅ |
-| 7 | Detección/agrupación: `DuplicateService` (SHA-256 exacto con caché, pHash visual, filtro dimensional conservador, agrupación contra representante, recomendación por resolución, espacio recuperable), `DuplicateUpdater` (JPQL por lotes), `DuplicateProperties`. Tests end-to-end (2) en verde | ✅ |
+| 7 | Detección/agrupación: `DuplicateService`, `DuplicateUpdater`, `DuplicateProperties`. Tests end-to-end (2) en verde | ✅ |
+| 8 | API REST: `ScanController`, `GroupController`, `ImageController`, `HealthController`, DTOs (`ApiDtos`), manejo global de errores en español. Tests MockMvc (4) en verde | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 
