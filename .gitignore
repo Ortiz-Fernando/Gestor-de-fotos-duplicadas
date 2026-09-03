@@ -1,0 +1,50 @@
+# --- Java / Maven (backend) ---
+backend/target/
+*.class
+backend/.mvn/timing.properties
+
+# --- Node / frontend ---
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# --- IDE ---
+.idea/
+*.iml
+.vscode/
+*.swp
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+.factorypath
+
+# --- OS ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# --- Application data (SQLite, thumbnails, cache) ---
+data/database/
+data/thumbnails/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Builds / empaquetado ---
+build/
+out/
+release/
+
+# --- Copias locales y temporales ---
+tmp/
+temp/

@@ -1,0 +1,3 @@
+# Normalización de finales de línea
+backend/mvnw text eol=lf
+*.cmd text eol=crlf
