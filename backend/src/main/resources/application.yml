@@ -8,6 +8,8 @@ spring:
   datasource:
     url: jdbc:sqlite:../data/database/images.db
     driver-class-name: org.sqlite.JDBC
+    hikari:
+      connection-init-sql: PRAGMA busy_timeout=5000
   jpa:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
     hibernate:
@@ -18,6 +20,8 @@ duplicate:
   perceptual:
     threshold: 10          # banda "posible duplicado visual"
     review-threshold: 22   # banda "similar -> revision humana"
+  visual:
+    dimension-filter-enabled: true
 
 logging:
   level:

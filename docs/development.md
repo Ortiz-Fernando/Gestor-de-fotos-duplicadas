@@ -5,15 +5,17 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 3 — Persistencia (entidades, repositorios, SQLite WAL).** *Pendiente de iniciar.*
+**Fase 4 — Exploración: `ScanService` (walk recursivo, detección de imágenes, progreso,
+cancelación, manejo de errores y unidades no disponibles).** *Pendiente de iniciar.*
 
 ## Funcionalidades completadas
 
 | Fase | Contenido | Estado |
 |---|---|---|
-| 0 | Repositorio: `.gitignore`, `README.md`. `git init` **pendiente** (Git no instalado en el sistema) | ⚠️ Docs OK; git pendiente |
-| 1 | `docs/architecture.md`, `docs/decisions.md` (ADR D1–D7), `docs/api.md`, `docs/duplicate-detection.md`, `docs/packaging.md` | ✅ |
-| 2 | Esqueleto backend generado con Spring Initializr (Boot 4.1.1, Java 25) bajo `backend/`. **Prueba mínima superada**: `mvnw compile` + `mvnw test` → contexto Spring con JPA/Hibernate + SQLiteDialect arranca y `SELECT 1` funciona. Versiones resueltas reales: Hibernate ORM **7.4.5.Final**, sqlite-jdbc **3.53.4.0** | ✅ |
+| 0 | Repositorio: `.gitignore`, `README.md`. Repositorio Git inicializado (rama `main`, 3 commits base) | ✅ |
+| 1 | `docs/architecture.md`, `docs/decisions.md` (ADR D1–D8), `docs/api.md`, `docs/duplicate-detection.md`, `docs/packaging.md` | ✅ |
+| 2 | Esqueleto backend (Spring Initializr Boot 4.1.1 + Java 25). Prueba mínima superada: JPA/Hibernate 7.4.5 + SQLiteDialect arrancan y conectan | ✅ |
+| 3 | Persistencia: entidades (`Scan`, `ImageRecord`, `DupGroup`, `OperationLog`, `AppSetting`), enums, repositorios Spring Data, WAL + índice único explícito, directorios de datos. Tests de integración (7) en verde | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 

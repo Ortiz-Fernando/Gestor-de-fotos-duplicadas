@@ -69,6 +69,28 @@ el respaldo 3.5.16.**
   `RenameService`, `DeleteService`, `OperationService`) y **no** contiene algoritmos
   de hashing: solo los invoca.
 
+## D8 — Generación de IDs y claves únicas en SQLite (hallazgo de la Fase 3)
+**Estado:** aceptada · **Fecha:** 2026-09-03
+
+- **Contexto:** el dialecto comunitario `SQLiteDialect` de Hibernate ORM 7.4.5 genera
+  columnas IDENTITY con tipo vacío (`create table ... (id, ... primary key (id))`).
+  SQLite solo auto-asigna la clave cuando la columna es `INTEGER PRIMARY KEY`, por lo
+  que los INSERT dejaban `id = NULL` (solo se rellenaba el `rowid` interno) → fallaban
+  `findById`, `update` y `count`. Además, SQLite no admite `ALTER TABLE ... ADD
+  CONSTRAINT`, por lo que Hibernate no materializa las `@UniqueConstraint` compuestas.
+- **Decisión:**
+  1. IDs generados con **generador por tabla estándar JPA** (`GenerationType.TABLE`,
+     tabla `hibernate_sequences`, `allocationSize=1`) en las entidades `Scan`,
+     `ImageRecord`, `DupGroup` y `OperationLog`. No depende del soporte IDENTITY del
+     dialecto y funciona de forma portable.
+  2. La clave única compuesta `(scan_id, absolute_path)` se crea explícitamente al
+     arrancar: `CREATE UNIQUE INDEX IF NOT EXISTS uk_image_scan_path ...` en
+     `SqliteWALInitializer` (el anotado `@UniqueConstraint` se conserva como documento
+     de intención, ya que el DDL de SQLite lo ignora).
+- **Consecuencias:** IDs deterministas y almacenados correctamente; ligera sobrecarga de
+  una consulta extra por INSERT (irrelevante para un catálogo local). Los tests de la
+  Fase 3 verifican el round-trip completo y la violación de unicidad.
+
 ## D7 — Estrategia de detección v1 (sin índice de pHash)
 **Estado:** aceptada · **Fecha:** 2026-09-03
 
