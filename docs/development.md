@@ -5,8 +5,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 5 — `hashing/Sha256Hasher` (streaming) + caché por (tamaño, fecha).**
-*Pendiente de iniciar.*
+**Fase 6 — Perceptual hash: `hashing/` (`ImagePerceptualHasher`, `DctPhashHasher`,
+`HammingDistance`) + tests.** *Pendiente de iniciar.*
 
 ## Funcionalidades completadas
 
@@ -15,8 +15,9 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 0 | Repositorio: `.gitignore`, `README.md`. Repositorio Git inicializado (rama `main`, 3 commits base) | ✅ |
 | 1 | `docs/architecture.md`, `docs/decisions.md` (ADR D1–D8), `docs/api.md`, `docs/duplicate-detection.md`, `docs/packaging.md` | ✅ |
 | 2 | Esqueleto backend (Spring Initializr Boot 4.1.1 + Java 25). Prueba mínima superada: JPA/Hibernate 7.4.5 + SQLiteDialect arrancan y conectan | ✅ |
-| 3 | Persistencia: entidades (`Scan`, `ImageRecord`, `DupGroup`, `OperationLog`, `AppSetting`), enums, repositorios Spring Data, WAL + índice único explícito, directorios de datos. Tests de integración (7) en verde | ✅ |
-| 4 | Exploración: `ScanService` (walk recursivo con `Files.walkFileTree`, filtro por extensiones D4, sin seguir enlaces, errores tolerantes, progreso en memoria, cancelación cooperativa, persistencia por lotes, `ScanPersister`, `SupportedImageFormats`, executor dedicado). Tests (6) en verde | ✅ |
+| 3 | Persistencia: entidades, enums, repositorios, WAL + índice único explícito, directorios de datos. Tests de integración (7) en verde | ✅ |
+| 4 | Exploración: `ScanService` (walk recursivo, filtro D4, errores tolerantes, progreso, cancelación, persistencia por lotes). Tests (6) en verde | ✅ |
+| 5 | SHA-256: `hashing/Sha256Hasher` (streaming, buffer 8 MB, hex) + `hashing/Sha256CacheValidator` (reutilización segura por tamaño + fecha) + `HashingException`. Tests (9) en verde | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 
