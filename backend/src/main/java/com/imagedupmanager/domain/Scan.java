@@ -56,6 +56,10 @@ public class Scan {
     @Column(name = "options", columnDefinition = "TEXT")
     private String options;
 
+    /** User-facing reason when the scan ended with FAILED (or the cancel reason). */
+    @Column(name = "error_message", columnDefinition = "TEXT")
+    private String errorMessage;
+
     protected Scan() {
         // Required by JPA.
     }
@@ -123,5 +127,13 @@ public class Scan {
 
     public void setOptions(String options) {
         this.options = options;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

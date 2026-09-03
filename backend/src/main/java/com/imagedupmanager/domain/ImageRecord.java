@@ -121,6 +121,10 @@ public class ImageRecord {
         return scan;
     }
 
+    public void setScan(Scan scan) {
+        this.scan = scan;
+    }
+
     public String getAbsolutePath() {
         return absolutePath;
     }
