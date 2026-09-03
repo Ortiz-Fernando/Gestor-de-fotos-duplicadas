@@ -132,8 +132,11 @@ public class ScanService {
         scan.setFileCount(state.storedFiles());
         scan.setErrorCount(state.errorCount());
         scan.setErrorMessage(errorMessage);
+        // Persist BEFORE exposing the terminal state: callers may read the database as
+        // soon as the progress shows a terminal status.
+        Scan saved = persister.save(scan);
         state.setStatus(status);
-        return persister.save(scan);
+        return saved;
     }
 
     private void flush(List<ImageRecord> pending, MutableScanState state) {

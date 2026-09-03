@@ -5,8 +5,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 7 — Detección/agrupación (`DuplicateService`): exactos, visuales, Hamming,
-clasificación por umbrales, agrupación y espacio recuperable.** *Pendiente de iniciar.*
+**Fase 8 — API REST (controllers, DTOs, validación, excepciones, MockMvc).**
+*Pendiente de iniciar.*
 
 ## Funcionalidades completadas
 
@@ -18,7 +18,8 @@ clasificación por umbrales, agrupación y espacio recuperable.** *Pendiente de 
 | 3 | Persistencia: entidades, enums, repositorios, WAL + índice único explícito, directorios de datos. Tests de integración (7) en verde | ✅ |
 | 4 | Exploración: `ScanService` (walk recursivo, filtro D4, errores tolerantes, progreso, cancelación, persistencia por lotes). Tests (6) en verde | ✅ |
 | 5 | SHA-256: `hashing/Sha256Hasher` (streaming, buffer 8 MB) + `Sha256CacheValidator` + `HashingException`. Tests (9) en verde | ✅ |
-| 6 | pHash perceptual: `hashing/ImagePerceptualHasher`, `DctPhashHasher` (DCT-64, DC descartado, mediana), `HammingDistance`, `ExifOrientationNormalizer` (orientaciones EXIF 1-8). Tests (12) en verde | ✅ |
+| 6 | pHash perceptual: `hashing/ImagePerceptualHasher`, `DctPhashHasher` (DCT-64), `HammingDistance`, `ExifOrientationNormalizer`. Tests (12) en verde | ✅ |
+| 7 | Detección/agrupación: `DuplicateService` (SHA-256 exacto con caché, pHash visual, filtro dimensional conservador, agrupación contra representante, recomendación por resolución, espacio recuperable), `DuplicateUpdater` (JPQL por lotes), `DuplicateProperties`. Tests end-to-end (2) en verde | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 
