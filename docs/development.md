@@ -5,8 +5,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 6 — Perceptual hash: `hashing/` (`ImagePerceptualHasher`, `DctPhashHasher`,
-`HammingDistance`) + tests.** *Pendiente de iniciar.*
+**Fase 7 — Detección/agrupación (`DuplicateService`): exactos, visuales, Hamming,
+clasificación por umbrales, agrupación y espacio recuperable.** *Pendiente de iniciar.*
 
 ## Funcionalidades completadas
 
@@ -17,7 +17,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 2 | Esqueleto backend (Spring Initializr Boot 4.1.1 + Java 25). Prueba mínima superada: JPA/Hibernate 7.4.5 + SQLiteDialect arrancan y conectan | ✅ |
 | 3 | Persistencia: entidades, enums, repositorios, WAL + índice único explícito, directorios de datos. Tests de integración (7) en verde | ✅ |
 | 4 | Exploración: `ScanService` (walk recursivo, filtro D4, errores tolerantes, progreso, cancelación, persistencia por lotes). Tests (6) en verde | ✅ |
-| 5 | SHA-256: `hashing/Sha256Hasher` (streaming, buffer 8 MB, hex) + `hashing/Sha256CacheValidator` (reutilización segura por tamaño + fecha) + `HashingException`. Tests (9) en verde | ✅ |
+| 5 | SHA-256: `hashing/Sha256Hasher` (streaming, buffer 8 MB) + `Sha256CacheValidator` + `HashingException`. Tests (9) en verde | ✅ |
+| 6 | pHash perceptual: `hashing/ImagePerceptualHasher`, `DctPhashHasher` (DCT-64, DC descartado, mediana), `HammingDistance`, `ExifOrientationNormalizer` (orientaciones EXIF 1-8). Tests (12) en verde | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 
