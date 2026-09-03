@@ -1,0 +1,24 @@
+server:
+  address: localhost
+  port: 8080
+
+spring:
+  application:
+    name: image-duplicate-manager
+  datasource:
+    url: jdbc:sqlite:../data/database/images.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+duplicate:
+  perceptual:
+    threshold: 10          # banda "posible duplicado visual"
+    review-threshold: 22   # banda "similar -> revision humana"
+
+logging:
+  level:
+    root: INFO

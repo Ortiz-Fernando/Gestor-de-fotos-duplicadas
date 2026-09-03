@@ -1,0 +1,10 @@
+# Configuracion usada SOLO en tests: BD SQLite desechable bajo target/.
+spring:
+  datasource:
+    url: jdbc:sqlite:./target/smoke-test.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
