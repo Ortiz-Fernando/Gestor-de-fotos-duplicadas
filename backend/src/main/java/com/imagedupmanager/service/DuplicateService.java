@@ -7,6 +7,7 @@ import com.imagedupmanager.config.DuplicateProperties;
 import com.imagedupmanager.domain.DupGroup;
 import com.imagedupmanager.domain.DupGroupCategory;
 import com.imagedupmanager.domain.ImageRecord;
+import com.imagedupmanager.domain.ImageStatus;
 import com.imagedupmanager.domain.Scan;
 import com.imagedupmanager.hashing.ExifOrientationNormalizer;
 import com.imagedupmanager.hashing.HammingDistance;
@@ -77,7 +78,9 @@ public class DuplicateService {
                 .orElseThrow(() -> new ScanException("El análisis seleccionado no existe."));
         resetForScan(scanId);
 
-        List<ImageRecord> records = imageRecordRepository.findByScanIdOrderByAbsolutePathAsc(scanId);
+        List<ImageRecord> records =
+                imageRecordRepository.findByScanIdAndStatusOrderByAbsolutePathAsc(
+                        scanId, ImageStatus.ACTIVE);
         Counters counters = new Counters();
 
         // 1) SHA-256 pass (streaming, with safe cache reuse).
@@ -273,12 +276,8 @@ public class DuplicateService {
     private void persistGroup(DupGroupCategory category, List<ImageRecord> members,
                               Counters counters) {
         Long scanId = members.get(0).getScan().getId();
-        ImageRecord recommended = recommend(members);
-        long totalBytes = 0;
-        for (ImageRecord member : members) {
-            totalBytes += member.getSizeBytes();
-        }
-        long reclaimable = totalBytes - recommended.getSizeBytes();
+        ImageRecord recommended = ImageRecommendation.recommend(members);
+        long reclaimable = ImageRecommendation.reclaimableBytes(members, recommended);
 
         List<Long> memberIds = new ArrayList<>();
         for (ImageRecord member : members) {
@@ -296,37 +295,6 @@ public class DuplicateService {
             counters.visualGroups++;
             counters.visualImages += members.size();
         }
-    }
-
-    /** Suggests the file to keep: highest resolution, then largest, then deterministic path. */
-    private ImageRecord recommend(List<ImageRecord> members) {
-        ImageRecord best = members.get(0);
-        for (int i = 1; i < members.size(); i++) {
-            ImageRecord candidate = members.get(i);
-            if (isBetter(candidate, best)) {
-                best = candidate;
-            }
-        }
-        return best;
-    }
-
-    private boolean isBetter(ImageRecord candidate, ImageRecord current) {
-        long candidateArea = visualArea(candidate);
-        long currentArea = visualArea(current);
-        if (candidateArea != currentArea) {
-            return candidateArea > currentArea;
-        }
-        if (candidate.getSizeBytes() != current.getSizeBytes()) {
-            return candidate.getSizeBytes() > current.getSizeBytes();
-        }
-        return candidate.getAbsolutePath().compareToIgnoreCase(current.getAbsolutePath()) < 0;
-    }
-
-    private long visualArea(ImageRecord record) {
-        if (record.getWidth() != null && record.getHeight() != null) {
-            return (long) record.getWidth() * record.getHeight();
-        }
-        return -1L;
     }
 
     private record Decoded(BufferedImage image, Integer orientation) {

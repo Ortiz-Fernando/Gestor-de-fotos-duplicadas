@@ -29,7 +29,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
   });
   if (!response.ok) {
-    throw new Error(await parseError(response));
+    const error = new Error(await parseError(response)) as Error & { status?: number };
+    error.status = response.status;
+    throw error;
   }
   return (await response.json()) as T;
 }

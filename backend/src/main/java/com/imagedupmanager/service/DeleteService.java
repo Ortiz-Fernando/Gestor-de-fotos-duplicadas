@@ -15,25 +15,25 @@ import java.time.LocalDateTime;
 
 /**
  * Sends image files to the OS Recycle Bin (never a permanent delete). The image record is
- * marked as IN_TRASH and the operation is recorded as non-reversible automatically
- * (restore happens manually from the Windows Recycle Bin or from the application
- * internal trash folder when the volume has no Recycle Bin).
+ * marked as IN_TRASH, removed from its duplicate group and the operation is recorded as
+ * non-reversible automatically (restore happens manually from the Windows Recycle Bin or
+ * from the application internal trash folder when the volume has no Recycle Bin).
  */
 @Service
 public class DeleteService {
 
     private final ImageRecordRepository imageRecordRepository;
     private final OperationLogRepository operationLogRepository;
-    private final ImagePathUpdater imagePathUpdater;
+    private final GroupService groupService;
     private final FileTrash fileTrash;
 
     public DeleteService(ImageRecordRepository imageRecordRepository,
                          OperationLogRepository operationLogRepository,
-                         ImagePathUpdater imagePathUpdater,
+                         GroupService groupService,
                          FileTrash fileTrash) {
         this.imageRecordRepository = imageRecordRepository;
         this.operationLogRepository = operationLogRepository;
-        this.imagePathUpdater = imagePathUpdater;
+        this.groupService = groupService;
         this.fileTrash = fileTrash;
     }
 
@@ -49,7 +49,7 @@ public class DeleteService {
         }
 
         Path destination = fileTrash.sendToTrash(path);
-        imagePathUpdater.updateStatus(imageId, ImageStatus.IN_TRASH);
+        groupService.markTrashedAndRefresh(imageId);
 
         OperationLog log = new OperationLog(OperationType.TRASH, imageId,
                 path.toString(),

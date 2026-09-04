@@ -26,7 +26,7 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 11 | Renombrado seguro: `RenameService` + `RenameController`. Tests (4) en verde | ✅ |
 | 12 | Papelera y operaciones: `DeleteService` (JNA/Shell32), `OperationService` (historial/Undo), `OperationController`, `TrashController`. Tests (5 nuevos) en verde | ✅ |
 | 13 | Optimización: diferida por diseño (sin cuello de botella demostrado; AGENTS #55). Sin cambios | ✅ (documentado) |
-| 14 | Tests finales: suite backend completa (56 tests) en verde + build frontend OK | ✅ |
+| 14 | Tests finales: suite backend completa (59 tests) en verde + build frontend OK | ✅ |
 | 15 | Empaquetado: acciones de UI activadas (renombrar/papelera/historial), `npm run build:prod` → `static/`, fat jar generado y verificado en `localhost:8080` (UI + API). `jpackage`/`.exe` opcional | ✅ (fat jar); ⏳ exe opcional |
 
 ## Funcionalidades pendientes (plan v1.3)
@@ -60,6 +60,15 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
   JNA `SHFILEOPSTRUCT` declaraba `hwnd` como `NativeLong` (4 bytes) en vez de puntero
   (8 bytes en Win64), desalineando la estructura → Shell32 devolvía
   `ERROR_INVALID_PARAMETER` (87) en cualquier disco.
+- **Grupos de duplicados obsoletos al enviar a la Papelera (2026-09-04):** corregido.
+  Antes, enviar una imagen a la papelera solo marcaba `IN_TRASH`; la imagen seguía en su
+  grupo (miembros, contador, recomendada) y un re-`detect()` la reintroducía. Ahora solo
+  cuentan imágenes `ACTIVE`: al enviar a la papelera, `GroupService` desvincula la imagen,
+  recalcula `memberCount`/`reclaimableBytes`/`recommendedImageId` y borra el grupo cuando
+  quedan < 2 activas; `DuplicateService.detect()` procesa solo `ACTIVE`; la lectura de
+  grupos filtra activos y se auto-limpia (`GroupService`, `ImageRecommendation`, consultas
+  por estado en `ImageRecordRepository`). UI: estado «Grupo resuelto» cuando el grupo
+  desaparece. Tests nuevos en `DeleteServiceTest` (3).
 - **Papelera interna para USB (2026-09-04):** prueba manual confirmó que la unidad
   extraíble `E:\AUTOMOCION` no tiene Papelera del sistema (Explorer elimina directo).
   Nuevos componentes `RecycleBinSupport` (detección por volumen), `InternalFileTrash`

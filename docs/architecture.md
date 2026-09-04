@@ -56,6 +56,9 @@ Ver `docs/decisions.md` (ADR D1–D10).
 - `DeleteService` — envío a la papelera (nunca borrado silencioso). `FileTrashDelegator`
   elige entre la Papelera de Windows (`WindowsFileTrash`, JNA/Shell32) y la papelera
   interna (`InternalFileTrash`, `data/trash/`) según `RecycleBinSupport` (ADR D10).
+- `GroupService` — coherencia de grupos con el ciclo de vida: solo cuentan imágenes
+  `ACTIVE`; al enviar a la papelera desvincula la imagen y recalcula el grupo, y un grupo
+  con < 2 imágenes activas desaparece automáticamente.
 - `OperationService` — historial de operaciones y deshacer.
 
 ## Configuración principal

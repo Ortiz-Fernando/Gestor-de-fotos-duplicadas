@@ -1,7 +1,6 @@
 package com.imagedupmanager.service;
 
 import com.imagedupmanager.domain.ImageRecord;
-import com.imagedupmanager.domain.ImageStatus;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +25,6 @@ public class ImagePathUpdater {
                                 + "where r.id = :id")
                 .setParameter("path", absolutePath)
                 .setParameter("name", fileName)
-                .setParameter("id", imageId)
-                .executeUpdate();
-    }
-
-    @Transactional
-    public void updateStatus(Long imageId, ImageStatus status) {
-        entityManager.createQuery(
-                        "update ImageRecord r set r.status = :status where r.id = :id")
-                .setParameter("status", status)
                 .setParameter("id", imageId)
                 .executeUpdate();
     }

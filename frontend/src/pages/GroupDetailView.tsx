@@ -14,6 +14,7 @@ export default function GroupDetailView({ groupId, onBack }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<number | null>(null);
+  const [resolvedMessage, setResolvedMessage] = useState<string | null>(null);
 
   const reload = async () => {
     try {
@@ -67,14 +68,42 @@ export default function GroupDetailView({ groupId, onBack }: Props) {
     setBusyId(member.id);
     try {
       await api.trashImage(member.id);
-      setNotice(`"${member.name}" se ha enviado a la Papelera.`);
-      await reload();
     } catch (err) {
       setNotice((err as Error).message);
+      return;
     } finally {
       setBusyId(null);
     }
+    setNotice(`"${member.name}" se ha enviado a la Papelera.`);
+    try {
+      setGroup(await api.getGroup(groupId));
+    } catch (err) {
+      const status = (err as { status?: number }).status;
+      if (status === 404) {
+        setResolvedMessage(`"${member.name}" se ha enviado a la Papelera.`);
+        return;
+      }
+      setError((err as Error).message);
+    }
   };
+
+  if (resolvedMessage) {
+    return (
+      <section>
+        <div className="results-header">
+          <button type="button" onClick={onBack}>
+            ← Volver a resultados
+          </button>
+          <h2>Grupo resuelto</h2>
+        </div>
+        <p className="ok-message">{resolvedMessage}</p>
+        <p className="muted">
+          Este grupo ya no tiene suficientes imágenes activas para ser un duplicado y ha
+          desaparecido de los resultados.
+        </p>
+      </section>
+    );
+  }
 
   if (error) {
     return <p className="error">{error}</p>;
@@ -150,11 +179,6 @@ export default function GroupDetailView({ groupId, onBack }: Props) {
           </div>
         ))}
       </div>
-
-      <p className="muted note">
-        Las acciones (conservar, papelera, renombrar) se activarán en próximas fases. Ninguna
-        imagen se elimina automáticamente.
-      </p>
     </section>
   );
 }
