@@ -5,7 +5,7 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 9 — Frontend (React + TypeScript + Vite, interfaz en español).**
+**Fase 10 — Comparación visual y calibración de umbrales (pHash con fotografías reales).**
 *Pendiente de iniciar.*
 
 ## Funcionalidades completadas
@@ -20,7 +20,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 5 | SHA-256: `hashing/Sha256Hasher` (streaming, buffer 8 MB) + `Sha256CacheValidator` + `HashingException`. Tests (9) en verde | ✅ |
 | 6 | pHash perceptual: `hashing/ImagePerceptualHasher`, `DctPhashHasher` (DCT-64), `HammingDistance`, `ExifOrientationNormalizer`. Tests (12) en verde | ✅ |
 | 7 | Detección/agrupación: `DuplicateService`, `DuplicateUpdater`, `DuplicateProperties`. Tests end-to-end (2) en verde | ✅ |
-| 8 | API REST: `ScanController`, `GroupController`, `ImageController`, `HealthController`, DTOs (`ApiDtos`), manejo global de errores en español. Tests MockMvc (4) en verde | ✅ |
+| 8 | API REST: controladores, DTOs, validación, manejo global de errores en español. Tests MockMvc (4) en verde | ✅ |
+| 9 | Frontend React+TS+Vite: vistas Inicio (ruta + ANALIZAR + historial), Progreso (polling + cancelar + auto-detección), Resultados (resumen y grupos) y Grupo (comparador con imágenes, recomendada), API client, UI en español. Backend: `GET /api/images/{id}/content`. Build Vite verificado | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 
