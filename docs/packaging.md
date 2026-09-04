@@ -27,8 +27,9 @@ inicio (React) servida desde `static/` con código 200.
 
 ## Datos locales
 
-- Base de datos SQLite y miniaturas: `../data/` (relativa al directorio de ejecución;
-  durante el desarrollo se crea en la raíz del repo, `data/database/`, `data/thumbnails/`).
+- Base de datos SQLite, miniaturas y papelera interna: `../data/` (relativa al directorio
+  de ejecución; durante el desarrollo se crea en la raíz del repo: `data/database/`,
+  `data/thumbnails/`, `data/trash/`).
 - El servidor escucha solo en `localhost:8080` (configuración en `application.yml`).
 
 ## Opcional pendiente: ejecutable `.exe` (jpackage)

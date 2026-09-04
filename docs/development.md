@@ -26,7 +26,7 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 11 | Renombrado seguro: `RenameService` + `RenameController`. Tests (4) en verde | ✅ |
 | 12 | Papelera y operaciones: `DeleteService` (JNA/Shell32), `OperationService` (historial/Undo), `OperationController`, `TrashController`. Tests (5 nuevos) en verde | ✅ |
 | 13 | Optimización: diferida por diseño (sin cuello de botella demostrado; AGENTS #55). Sin cambios | ✅ (documentado) |
-| 14 | Tests finales: suite backend completa (53 tests) en verde + build frontend OK | ✅ |
+| 14 | Tests finales: suite backend completa (56 tests) en verde + build frontend OK | ✅ |
 | 15 | Empaquetado: acciones de UI activadas (renombrar/papelera/historial), `npm run build:prod` → `static/`, fat jar generado y verificado en `localhost:8080` (UI + API). `jpackage`/`.exe` opcional | ✅ (fat jar); ⏳ exe opcional |
 
 ## Funcionalidades pendientes (plan v1.3)
@@ -51,6 +51,19 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
   commits hasta instalarlo (`winget install --id Git.Git -e`).
 - Warnings cosméticos en tests (JDK 24+): `--enable-native-access` para sqlite-jdbc y
   agente Mockito. Sin impacto funcional; se silenciarán al empaquetar (Fase 15).
+
+## Correcciones registradas (post-Fase 15)
+
+- **Error 87 al enviar a la Papelera (2026-09-04):** causa raíz corregida. La estructura
+  JNA `SHFILEOPSTRUCT` declaraba `hwnd` como `NativeLong` (4 bytes) en vez de puntero
+  (8 bytes en Win64), desalineando la estructura → Shell32 devolvía
+  `ERROR_INVALID_PARAMETER` (87) en cualquier disco.
+- **Papelera interna para USB (2026-09-04):** prueba manual confirmó que la unidad
+  extraíble `E:\AUTOMOCION` no tiene Papelera del sistema (Explorer elimina directo).
+  Nuevos componentes `RecycleBinSupport` (detección por volumen), `InternalFileTrash`
+  (`data/trash/`) y `FileTrashDelegator` (único bean `FileTrash`) → ADR **D10**. Tests:
+  `InternalFileTrashTest` (2) + `FileTrashDelegatorTest` (2). Verificación real:
+  `C:\` → Papelera del sistema ✅, `E:\AUTOMOCION` → papelera interna ✅.
 
 ## Resultado de la verificación de compatibilidad (Fase 2)
 

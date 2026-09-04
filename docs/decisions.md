@@ -125,6 +125,36 @@ el respaldo 3.5.16.**
 
 ---
 
+## D10 — Papelera interna para unidades sin Papelera del sistema
+**Estado:** aceptada · **Fecha:** 2026-09-04
+
+- **Contexto:** prueba manual con el Explorador en la unidad USB `E:\AUTOMOCION`: el
+  archivo se **elimina directamente**, sin pasar por la Papelera del sistema
+  (comportamiento normal de Windows en unidades extraíbles). Además se detectó un bug de
+  alineación en la estructura JNA `SHFILEOPSTRUCT`: `hwnd` se declaraba como `NativeLong`
+  (4 bytes) en lugar de un puntero (8 bytes en Win64), por lo que Windows rechazaba la
+  llamada con `ERROR_INVALID_PARAMETER` (87) en cualquier unidad.
+- **Decisión:**
+  1. Corregir `WindowsFileTrash`: `hwnd` pasa a ser `Pointer` (8 bytes en Win64).
+  2. Antes de llamar a `SHFileOperation` con `FOF_ALLOWUNDO`, detectar si el volumen
+     tiene Papelera del sistema (`RecycleBinSupport`: `GetDriveTypeW` + `SHQueryRecycleBin`).
+     Un volumen sin Papelera (extraíble, red, CD) **nunca** recibe `FOF_ALLOWUNDO`, porque
+     en ese caso Windows borraría permanentemente y en silencio.
+  3. Si el volumen no tiene Papelera del sistema, el archivo se **mueve** a una papelera
+     interna de la aplicación en `data/trash/` (`InternalFileTrash`), conservando el
+     contenido y un nombre único con fecha + UUID + nombre original. Nunca se usa
+     `Files.delete`.
+  4. `FileTrashDelegator` es el único bean `FileTrash` y elige la estrategia. Ante
+     cualquier duda o en plataforma no Windows, falla hacia la papelera interna (seguro).
+- **Consecuencias:** en discos fijos el flujo es idéntico al anterior (Papelera del
+  sistema). En unidades USB la operación ya no falla ni borra: el archivo queda en
+  `data/trash/` (recuperable manualmente; el `OperationLog` guarda la ruta en
+  `destinationPath` cuando aplica). Limitación conocida: no se detecta en v1 el caso de
+  discos fijos con la Papelera deshabilitada manualmente por el usuario; se asume
+  Papelera en `DRIVE_FIXED` cuando `SHQueryRecycleBin` responde `S_OK`.
+
+---
+
 ## Histórico de versiones del plan
 
 | Versión | Cambios |

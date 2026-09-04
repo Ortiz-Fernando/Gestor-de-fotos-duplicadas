@@ -38,7 +38,7 @@ Navegador (Chrome/Edge)
 
 ## Decisiones clave
 
-Ver `docs/decisions.md` (ADR D1–D7).
+Ver `docs/decisions.md` (ADR D1–D10).
 
 | Área | Decisión |
 |---|---|
@@ -53,7 +53,9 @@ Ver `docs/decisions.md` (ADR D1–D7).
 - `ScanService` — exploración recursiva, progreso, cancelación, manejo de unidades no disponibles.
 - `DuplicateService` — detección (exacta y visual) y agrupación.
 - `RenameService` — renombrado seguro (previsualización, resolución de conflictos).
-- `DeleteService` — envío a la papelera (JNA/Shell32), nunca borrado silencioso.
+- `DeleteService` — envío a la papelera (nunca borrado silencioso). `FileTrashDelegator`
+  elige entre la Papelera de Windows (`WindowsFileTrash`, JNA/Shell32) y la papelera
+  interna (`InternalFileTrash`, `data/trash/`) según `RecycleBinSupport` (ADR D10).
 - `OperationService` — historial de operaciones y deshacer.
 
 ## Configuración principal

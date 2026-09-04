@@ -21,6 +21,7 @@ public final class FileSystemBootstrap {
     public static void ensureDataDirectories() {
         createDirectory(Path.of(DATA_DIR, "database"));
         createDirectory(Path.of(DATA_DIR, "thumbnails"));
+        createDirectory(Path.of(DATA_DIR, "trash"));
     }
 
     private static void createDirectory(Path directory) {

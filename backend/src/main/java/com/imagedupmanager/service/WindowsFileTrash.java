@@ -2,7 +2,6 @@ package com.imagedupmanager.service;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
@@ -10,7 +9,6 @@ import com.sun.jna.WString;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIFunctionMapper;
 import com.sun.jna.win32.W32APITypeMapper;
-import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -19,8 +17,13 @@ import java.util.Map;
 /**
  * Sends files to the Windows Recycle Bin through Shell32 {@code SHFileOperation} with
  * {@code FOF_ALLOWUNDO} (AGENTS.md #37). Never performs a permanent delete.
+ *
+ * <p>This implementation must only be used when {@link RecycleBinSupport} confirms that
+ * the target volume has a Windows Recycle Bin; otherwise {@link FileTrashDelegator}
+ * falls back to the internal trash ({@link InternalFileTrash}). Returns {@code null}
+ * because the file is not stored in an application-managed location: the operating
+ * system Recycle Bin manages it.
  */
-@Component
 public class WindowsFileTrash implements FileTrash {
 
     private static final int FO_DELETE = 3;
@@ -29,10 +32,10 @@ public class WindowsFileTrash implements FileTrash {
     private static final short FOF_ALLOWUNDO = 0x0040;
 
     @Override
-    public void sendToTrash(Path file) {
+    public Path sendToTrash(Path file) {
         if (!Platform.isWindows()) {
             throw new OperationException(
-                    "El envío a la Papelera solo está disponible en Windows.");
+                    "El envío a la Papelera de Windows solo está disponible en Windows.");
         }
         String fullPath = file.toAbsolutePath().toString();
         // SHFileOperation requires a double-null terminated list for pFrom.
@@ -47,6 +50,7 @@ public class WindowsFileTrash implements FileTrash {
                     "No se ha podido enviar el archivo a la Papelera de Windows (código "
                             + result + ").");
         }
+        return null;
     }
 
     private interface Shell32 extends StdCallLibrary {
@@ -70,7 +74,9 @@ public class WindowsFileTrash implements FileTrash {
     @Structure.FieldOrder({"hwnd", "wFunc", "pFrom", "pTo", "fFlags",
             "fAnyOperationsAborted", "hNameMappings", "lpszProgressTitle"})
     public static class SHFILEOPSTRUCT extends Structure {
-        public NativeLong hwnd = new NativeLong(0);
+        // HWND is an 8-byte pointer on Win64. A 4-byte NativeLong misaligned the whole
+        // struct and Windows rejected the call with ERROR_INVALID_PARAMETER (87).
+        public Pointer hwnd;
         public int wFunc;
         public WString pFrom;
         public WString pTo;

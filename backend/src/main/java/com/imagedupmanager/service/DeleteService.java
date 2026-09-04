@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 /**
  * Sends image files to the OS Recycle Bin (never a permanent delete). The image record is
  * marked as IN_TRASH and the operation is recorded as non-reversible automatically
- * (restore happens manually from the Windows Recycle Bin).
+ * (restore happens manually from the Windows Recycle Bin or from the application
+ * internal trash folder when the volume has no Recycle Bin).
  */
 @Service
 public class DeleteService {
@@ -47,11 +48,13 @@ public class DeleteService {
             throw new OperationException("El archivo de la imagen ya no está disponible en el disco.");
         }
 
-        fileTrash.sendToTrash(path);
+        Path destination = fileTrash.sendToTrash(path);
         imagePathUpdater.updateStatus(imageId, ImageStatus.IN_TRASH);
 
         OperationLog log = new OperationLog(OperationType.TRASH, imageId,
-                path.toString(), null, LocalDateTime.now());
+                path.toString(),
+                destination != null ? destination.toString() : null,
+                LocalDateTime.now());
         log.setReversible(false);
         operationLogRepository.save(log);
     }

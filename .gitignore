@@ -33,6 +33,7 @@ Desktop.ini
 # --- Application data (SQLite, thumbnails, cache) ---
 data/database/
 data/thumbnails/
+data/trash/
 data/samples/*
 !data/samples/README.md
 data/calibration/

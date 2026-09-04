@@ -57,8 +57,9 @@ export default function GroupDetailView({ groupId, onBack }: Props) {
 
   const handleTrash = async (member: ImageMeta) => {
     const confirmed = window.confirm(
-      `¿Enviar "${member.name}" a la Papelera de Windows?\n` +
-        'Podrás recuperarlo desde la Papelera del sistema.',
+      `¿Enviar "${member.name}" a la papelera?\n` +
+        'Si la unidad tiene Papelera del sistema se usará esta; si no, se moverá a la ' +
+        'papelera interna de la aplicación. Nunca se borra definitivamente.',
     );
     if (!confirmed) {
       return;
