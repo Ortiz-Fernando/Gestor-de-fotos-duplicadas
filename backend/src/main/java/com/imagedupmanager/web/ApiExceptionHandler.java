@@ -1,6 +1,7 @@
 package com.imagedupmanager.web;
 
 import com.imagedupmanager.web.dto.ApiDtos.ApiError;
+import com.imagedupmanager.service.OperationException;
 import com.imagedupmanager.service.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,13 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(ScanException.class)
     public ResponseEntity<ApiError> handleScan(ScanException exception) {
+        return ResponseEntity.badRequest()
+                .body(ApiError.of(HttpStatus.BAD_REQUEST.value(), "Bad Request",
+                        exception.getMessage()));
+    }
+
+    @ExceptionHandler(OperationException.class)
+    public ResponseEntity<ApiError> handleOperation(OperationException exception) {
         return ResponseEntity.badRequest()
                 .body(ApiError.of(HttpStatus.BAD_REQUEST.value(), "Bad Request",
                         exception.getMessage()));

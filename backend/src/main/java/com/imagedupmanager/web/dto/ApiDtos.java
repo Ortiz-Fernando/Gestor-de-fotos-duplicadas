@@ -65,6 +65,13 @@ public final class ApiDtos {
         }
     }
 
+    /** Request body for image operations that use a file name. */
+    public record RenameRequest(
+            @NotBlank(message = "Indica el nuevo nombre del archivo.")
+            @Size(max = 255, message = "El nuevo nombre es demasiado largo.")
+            String newName) {
+    }
+
     public record ApiError(LocalDateTime timestamp, int status, String error, String message) {
 
         public static ApiError of(int status, String error, String message) {

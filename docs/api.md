@@ -22,6 +22,9 @@ GET    /api/scans/{scanId}/groups         Grupos de un análisis
 GET    /api/groups/{id}                   Detalle de grupo (miembros + recomendada)
 
 GET    /api/images/{id}                   Metadatos de una imagen
+
+POST   /api/images/{id}/rename/preview    Previsualiza un renombrado  { newName }
+POST   /api/images/{id}/rename            Aplica un renombrado (no sobrescribe)
 ```
 
 ## Esbozo de endpoints

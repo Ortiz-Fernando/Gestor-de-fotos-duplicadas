@@ -5,8 +5,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 11 — Renombrado (`RenameService`: validación, conflictos, tests, confirmación).**
-*Pendiente de iniciar.*
+**Fase 12 — Papelera y operaciones (`DeleteService` con JNA/Shell32, `OperationService`,
+historial y Undo, confirmaciones).** *Pendiente de iniciar.*
 
 ## Funcionalidades completadas
 
@@ -22,7 +22,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 7 | Detección/agrupación: `DuplicateService`, `DuplicateUpdater`, `DuplicateProperties`. Tests end-to-end (2) en verde | ✅ |
 | 8 | API REST: controladores, DTOs, validación, manejo global de errores en español. Tests MockMvc (4) en verde | ✅ |
 | 9 | Frontend React+TS+Vite: Inicio, Progreso, Resultados, Grupo (UI español) + `GET /api/images/{id}/content`. Build Vite verificado | ✅ |
-| 10 | Comparación/calibración: herramienta `CalibrationReportGenerator`, medición con 40 fotos reales, umbrales calibrados (threshold=10, review=17) documentados (ADR D9) | ✅ |
+| 10 | Comparación/calibración: `CalibrationReportGenerator`, medición con 40 fotos reales, umbrales calibrados (threshold=10, review=17) documentados (ADR D9) | ✅ |
+| 11 | Renombrado seguro: `RenameService` (validación nombres Windows, nunca sobrescribe, mantiene extensión, preview/confirmación, historial reversible), `RenameController`, `ImagePathUpdater`. Tests (4) en verde | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 
