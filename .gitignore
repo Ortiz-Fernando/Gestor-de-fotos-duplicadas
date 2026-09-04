@@ -34,6 +34,7 @@ data/database/
 data/thumbnails/
 data/samples/*
 !data/samples/README.md
+data/calibration/
 *.db
 *.db-journal
 *.db-wal
