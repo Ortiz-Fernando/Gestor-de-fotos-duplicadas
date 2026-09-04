@@ -32,6 +32,8 @@ Desktop.ini
 # --- Application data (SQLite, thumbnails, cache) ---
 data/database/
 data/thumbnails/
+data/samples/*
+!data/samples/README.md
 *.db
 *.db-journal
 *.db-wal
