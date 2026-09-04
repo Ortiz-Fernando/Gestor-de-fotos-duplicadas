@@ -4,7 +4,9 @@ import com.imagedupmanager.domain.ImageRecord;
 import com.imagedupmanager.domain.ImageStatus;
 import com.imagedupmanager.domain.Scan;
 import com.imagedupmanager.domain.ScanStatus;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -65,11 +67,30 @@ public final class ApiDtos {
         }
     }
 
+    /** Operation history entry. */
+    public record Operation(Long id, String type, Long imageId, String sourcePath,
+                            String destinationPath, LocalDateTime operationTime,
+                            boolean reversible, LocalDateTime undoneAt) {
+
+        public static Operation from(com.imagedupmanager.domain.OperationLog log) {
+            return new Operation(log.getId(), log.getType().name(), log.getImageId(),
+                    log.getSourcePath(), log.getDestinationPath(), log.getOperationTime(),
+                    log.isReversible(), log.getUndoneAt());
+        }
+    }
+
     /** Request body for image operations that use a file name. */
     public record RenameRequest(
             @NotBlank(message = "Indica el nuevo nombre del archivo.")
             @Size(max = 255, message = "El nuevo nombre es demasiado largo.")
             String newName) {
+    }
+
+    /** Trash requires explicit user confirmation (never automatic). */
+    public record TrashRequest(
+            @NotNull(message = "Debes confirmar el envío a la Papelera.")
+            @AssertTrue(message = "Debes confirmar el envío a la Papelera.")
+            Boolean confirm) {
     }
 
     public record ApiError(LocalDateTime timestamp, int status, String error, String message) {

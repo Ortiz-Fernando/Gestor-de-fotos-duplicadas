@@ -50,6 +50,17 @@
 			<artifactId>metadata-extractor</artifactId>
 			<version>2.21.0</version>
 		</dependency>
+		<!-- Windows Recycle Bin integration (Shell32) -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.19.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.19.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>

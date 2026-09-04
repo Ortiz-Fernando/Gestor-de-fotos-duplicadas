@@ -25,6 +25,10 @@ GET    /api/images/{id}                   Metadatos de una imagen
 
 POST   /api/images/{id}/rename/preview    Previsualiza un renombrado  { newName }
 POST   /api/images/{id}/rename            Aplica un renombrado (no sobrescribe)
+POST   /api/images/{id}/trash             Envía a la Papelera  { confirm: true } (obligatorio)
+
+GET    /api/operations                    Historial de operaciones
+POST   /api/operations/{id}/undo          Deshace una operación reversible (rename)
 ```
 
 ## Esbozo de endpoints

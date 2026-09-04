@@ -117,6 +117,15 @@ class ScanApiTest {
     }
 
     @Test
+    void trashRequiresExplicitConfirmation() throws Exception {
+        mockMvc.perform(post("/api/images/1/trash")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Debes confirmar el envío a la Papelera."));
+    }
+
+    @Test
     void asyncScanCompletesAndDetectionEndpointsWork() throws Exception {
         Path root = Files.createDirectories(tempDir.resolve("api-fotos"));
         Path original = root.resolve("original.png");

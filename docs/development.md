@@ -5,8 +5,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 12 — Papelera y operaciones (`DeleteService` con JNA/Shell32, `OperationService`,
-historial y Undo, confirmaciones).** *Pendiente de iniciar.*
+**Fase 13 — Optimización (solo si pruebas reales lo demuestran; requiere ADR previo).**
+*Pendiente de decidir — no se optimizará sin medir (AGENTS.md #55).*
 
 ## Funcionalidades completadas
 
@@ -23,7 +23,8 @@ historial y Undo, confirmaciones).** *Pendiente de iniciar.*
 | 8 | API REST: controladores, DTOs, validación, manejo global de errores en español. Tests MockMvc (4) en verde | ✅ |
 | 9 | Frontend React+TS+Vite: Inicio, Progreso, Resultados, Grupo (UI español) + `GET /api/images/{id}/content`. Build Vite verificado | ✅ |
 | 10 | Comparación/calibración: `CalibrationReportGenerator`, medición con 40 fotos reales, umbrales calibrados (threshold=10, review=17) documentados (ADR D9) | ✅ |
-| 11 | Renombrado seguro: `RenameService` (validación nombres Windows, nunca sobrescribe, mantiene extensión, preview/confirmación, historial reversible), `RenameController`, `ImagePathUpdater`. Tests (4) en verde | ✅ |
+| 11 | Renombrado seguro: `RenameService` + `RenameController`. Tests (4) en verde | ✅ |
+| 12 | Papelera y operaciones: `DeleteService` (JNA/Shell32 `FOF_ALLOWUNDO`, confirmación explícita, marca IN_TRASH), `OperationService` (historial + Undo de rename, TRASH no automático), `FileTrash`/`WindowsFileTrash`, `OperationController`, `TrashController`. Tests (5 nuevos) en verde | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 
