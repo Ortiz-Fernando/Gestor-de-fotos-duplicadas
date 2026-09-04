@@ -91,6 +91,25 @@ el respaldo 3.5.16.**
   una consulta extra por INSERT (irrelevante para un catálogo local). Los tests de la
   Fase 3 verifican el round-trip completo y la violación de unicidad.
 
+## D9 — Calibración de umbrales con fotografías reales (Fase 10)
+**Estado:** aceptada · **Fecha:** 2026-09-04
+
+- **Contexto:** los valores iniciales de `AGENTS.md` eran `threshold=10` y
+  `review-threshold=22`. La Fase 10 exige calibrarlos con fotografías reales antes de
+  darlos por definitivos.
+- **Medición:** catálogo real de 40 imágenes de producto (muebles). Distribución de
+  distancias Hamming entre todos los pares:
+  - d=0 → 7 pares (copias/reescalados reales); d=4 → 1; d=6 → 1.
+  - **Zona vacía 7–17** (ningún par).
+  - Productos distintos (fondo de catálogo similar): desde d=18 (83 pares en 18–24).
+- **Decisión:** mantener `duplicate.perceptual.threshold = 10` (captura todos los
+  duplicados reales de la muestra y no produce falsos positivos) y fijar
+  `duplicate.perceptual.review-threshold = 17` (justo bajo el primer par de productos
+  distintos, para evitar ruido en la revisión humana).
+- **Consecuencias:** valores configurables en `application.yml` y en el valor por defecto
+  de `DuplicateProperties`. Deben revisarse si el tipo de colección cambia
+  (documentado en `docs/duplicate-detection.md`).
+
 ## D7 — Estrategia de detección v1 (sin índice de pHash)
 **Estado:** aceptada · **Fecha:** 2026-09-03
 

@@ -18,17 +18,33 @@
 duplicate:
   perceptual:
     threshold: 10          # ≤ : POSIBLE_DUPLICADO_VISUAL
-    review-threshold: 22   # (threshold, review-threshold]: SIMILAR_REVIEW (revisión humana)
+    review-threshold: 17   # (threshold, review-threshold]: SIMILAR_REVIEW (revisión humana)
 ```
 
 ## ⚠️ Calibración (importante)
 
 - La distancia de Hamming **no equivale a un porcentaje exacto** de similitud visual.
   Por ejemplo, `Hamming = 5` sobre 64 bits **no** significa "92 % similar".
-- Los valores 10 y 22 son **iniciales** y deben calibrarse con fotografías reales
-  (misma foto recompimida, escalada, con marca de agua, ligeramente editada, etc.).
 - Nada se elimina ni se marca prescindible automáticamente por pHash: los resultados
   visuales son siempre candidatos que requieren decisión humana.
+
+### Medición con fotos reales (2026-09-04, catálogo de muebles)
+
+Conjunto de prueba real de 40 imágenes (5 categorías de producto). Resultados:
+
+| Distancia | Pares | Interpretación |
+|---|---:|---|
+| 0 | 7 | Misma foto copiada / reescalada → duplicado real |
+| 4 | 1 | Misma foto con variación → duplicado real |
+| 6 | 1 | Misma foto con variación → duplicado real |
+| 7–17 | 0 | Zona vacía |
+| 18–24 | 83 | Productos distintos (mismo estilo de fotografía) |
+
+**Conclusión:** `threshold = 10` captura todos los duplicados reales de la muestra y no
+produce falsos positivos (el primer par de productos distintos está en 18).
+`review-threshold = 17` deja la banda de revisión justo por debajo del primer par de
+productos distintos, evitando ruido en catálogos fotografiados con fondo similar.
+Los valores son configurables y deberán revisarse si el tipo de colección cambia.
 
 ## Formatos
 

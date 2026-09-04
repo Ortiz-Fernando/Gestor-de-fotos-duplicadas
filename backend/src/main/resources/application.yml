@@ -18,8 +18,8 @@ spring:
 
 duplicate:
   perceptual:
-    threshold: 10          # banda "posible duplicado visual"
-    review-threshold: 22   # banda "similar -> revision humana"
+    threshold: 10          # banda "posible duplicado visual" (calibrado Fase 10)
+    review-threshold: 17   # banda "similar -> revision humana" (calibrado Fase 10)
   visual:
     dimension-filter-enabled: true
 

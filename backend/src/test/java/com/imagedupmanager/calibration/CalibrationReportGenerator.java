@@ -49,7 +49,8 @@ public class CalibrationReportGenerator {
         Path samples = Path.of("..", "data", "samples").toAbsolutePath().normalize();
         Path outputDir = Path.of("..", "data", "calibration").toAbsolutePath().normalize();
         if (!Files.isDirectory(samples)) {
-            throw new IllegalStateException("No existe la carpeta de muestras: " + samples);
+            System.out.println("Calibración omitida: no existe la carpeta de muestras " + samples);
+            return;
         }
         Files.createDirectories(outputDir);
 

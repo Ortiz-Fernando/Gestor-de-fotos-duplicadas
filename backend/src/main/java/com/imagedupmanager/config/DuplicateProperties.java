@@ -28,7 +28,7 @@ public class DuplicateProperties {
         private int threshold = 10;
 
         /** threshold < distance <= reviewThreshold -> SIMILAR_REVIEW (human review only). */
-        private int reviewThreshold = 22;
+        private int reviewThreshold = 17;
 
         public int getThreshold() {
             return threshold;

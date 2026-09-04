@@ -5,7 +5,7 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 10 — Comparación visual y calibración de umbrales (pHash con fotografías reales).**
+**Fase 11 — Renombrado (`RenameService`: validación, conflictos, tests, confirmación).**
 *Pendiente de iniciar.*
 
 ## Funcionalidades completadas
@@ -13,7 +13,7 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | Fase | Contenido | Estado |
 |---|---|---|
 | 0 | Repositorio: `.gitignore`, `README.md`. Repositorio Git inicializado (rama `main`, 3 commits base) | ✅ |
-| 1 | `docs/architecture.md`, `docs/decisions.md` (ADR D1–D8), `docs/api.md`, `docs/duplicate-detection.md`, `docs/packaging.md` | ✅ |
+| 1 | `docs/architecture.md`, `docs/decisions.md` (ADR D1–D9), `docs/api.md`, `docs/duplicate-detection.md`, `docs/packaging.md` | ✅ |
 | 2 | Esqueleto backend (Spring Initializr Boot 4.1.1 + Java 25). Prueba mínima superada: JPA/Hibernate 7.4.5 + SQLiteDialect arrancan y conectan | ✅ |
 | 3 | Persistencia: entidades, enums, repositorios, WAL + índice único explícito, directorios de datos. Tests de integración (7) en verde | ✅ |
 | 4 | Exploración: `ScanService` (walk recursivo, filtro D4, errores tolerantes, progreso, cancelación, persistencia por lotes). Tests (6) en verde | ✅ |
@@ -21,7 +21,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 6 | pHash perceptual: `hashing/ImagePerceptualHasher`, `DctPhashHasher` (DCT-64), `HammingDistance`, `ExifOrientationNormalizer`. Tests (12) en verde | ✅ |
 | 7 | Detección/agrupación: `DuplicateService`, `DuplicateUpdater`, `DuplicateProperties`. Tests end-to-end (2) en verde | ✅ |
 | 8 | API REST: controladores, DTOs, validación, manejo global de errores en español. Tests MockMvc (4) en verde | ✅ |
-| 9 | Frontend React+TS+Vite: vistas Inicio (ruta + ANALIZAR + historial), Progreso (polling + cancelar + auto-detección), Resultados (resumen y grupos) y Grupo (comparador con imágenes, recomendada), API client, UI en español. Backend: `GET /api/images/{id}/content`. Build Vite verificado | ✅ |
+| 9 | Frontend React+TS+Vite: Inicio, Progreso, Resultados, Grupo (UI español) + `GET /api/images/{id}/content`. Build Vite verificado | ✅ |
+| 10 | Comparación/calibración: herramienta `CalibrationReportGenerator`, medición con 40 fotos reales, umbrales calibrados (threshold=10, review=17) documentados (ADR D9) | ✅ |
 
 ## Funcionalidades pendientes (plan v1.3)
 
