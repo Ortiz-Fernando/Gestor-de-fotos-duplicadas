@@ -1,16 +1,52 @@
 # Empaquetado para Windows
 
-> **Estado:** documento de planificación. Se completará en la **Fase 15**.
+## Estado actual (Fase 15)
 
-## Plan previsto
+✅ El **fat jar** funciona y sirve la interfaz + API en `http://localhost:8080`.
 
-1. `npm run build` en `frontend/` → copia del resultado a
-   `backend/src/main/resources/static/`.
-2. `.\mvnw.cmd package` en `backend/` → fat jar ejecutable.
-3. Ejecución: `http://localhost:8080` (Spring Boot sirve interfaz + API).
-4. Opcional posterior: `jpackage`/script `.bat` de arranque y parada.
+## Pasos verificados
 
-## Requisitos de ejecución
+```powershell
+# 1. Compilar el frontend y copiarlo a Spring Boot (static/)
+cd frontend
+npm run build:prod        # -> backend/src/main/resources/static/
 
-- JDK 25 (o JRE empaquetado mediante `jlink`/`jpackage`).
-- Sin dependencias de red en tiempo de ejecución.
+# 2. Empaquetar el backend como fat jar
+cd backend
+.\mvnw.cmd -DskipTests package
+# -> backend/target/imageduplicatemanager-0.0.1-SNAPSHOT.jar (~68 MB)
+
+# 3. Ejecutar
+cd backend
+java -jar target\imageduplicatemanager-0.0.1-SNAPSHOT.jar
+# Abrir http://localhost:8080
+```
+
+La prueba automatizada confirmó: `GET /api/health` → `{"status":"OK"}` y la página de
+inicio (React) servida desde `static/` con código 200.
+
+## Datos locales
+
+- Base de datos SQLite y miniaturas: `../data/` (relativa al directorio de ejecución;
+  durante el desarrollo se crea en la raíz del repo, `data/database/`, `data/thumbnails/`).
+- El servidor escucha solo en `localhost:8080` (configuración en `application.yml`).
+
+## Opcional pendiente: ejecutable `.exe` (jpackage)
+
+```powershell
+cd backend
+# 1. Generar el runtime mínimo con jlink (Java 25)
+# 2. jpackage --input target --main-jar imageduplicatemanager-0.0.1-SNAPSHOT.jar
+#      --name "ImageDuplicateManager" --win-console --type app-image
+```
+
+`jpackage` requiere un JDK con soporte de empaquetado. Al lanzar el `.exe`, la aplicación
+debe: iniciar Spring Boot, abrir el navegador en `localhost:8080` y usar la carpeta de
+datos local. Esta parte es opcional y se puede acometer cuando se quiera distribuir a
+otros usuarios sin JDK.
+
+## Requisitos
+
+- JDK 25 (o JRE empaquetado con `jlink`).
+- Sin dependencias de red en tiempo de ejecución (todo local).
+

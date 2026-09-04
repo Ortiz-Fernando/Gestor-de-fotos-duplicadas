@@ -4,6 +4,8 @@ import type {
   GroupDetail,
   GroupSummary,
   ImageMeta,
+  Operation,
+  RenamePreview,
   ScanSummary,
 } from '../types';
 
@@ -67,6 +69,35 @@ export const api = {
 
   getImage(id: number): Promise<ImageMeta> {
     return request(`/images/${id}`);
+  },
+
+  renamePreview(id: number, newName: string): Promise<RenamePreview> {
+    return request(`/images/${id}/rename/preview`, {
+      method: 'POST',
+      body: JSON.stringify({ newName }),
+    });
+  },
+
+  renameImage(id: number, newName: string): Promise<{ message: string }> {
+    return request(`/images/${id}/rename`, {
+      method: 'POST',
+      body: JSON.stringify({ newName }),
+    });
+  },
+
+  trashImage(id: number): Promise<{ message: string }> {
+    return request(`/images/${id}/trash`, {
+      method: 'POST',
+      body: JSON.stringify({ confirm: true }),
+    });
+  },
+
+  listOperations(): Promise<Operation[]> {
+    return request('/operations');
+  },
+
+  undoOperation(id: number): Promise<{ message: string }> {
+    return request(`/operations/${id}/undo`, { method: 'POST' });
   },
 
   imageContentUrl(id: number): string {

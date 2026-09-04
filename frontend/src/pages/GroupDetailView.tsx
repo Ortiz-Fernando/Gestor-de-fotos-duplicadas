@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { categoryLabel, formatBytes } from '../services/format';
-import type { GroupDetail } from '../types';
+import type { GroupDetail, ImageMeta } from '../types';
 
 interface Props {
   scanId: number;
@@ -12,6 +12,16 @@ interface Props {
 export default function GroupDetailView({ groupId, onBack }: Props) {
   const [group, setGroup] = useState<GroupDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<number | null>(null);
+
+  const reload = async () => {
+    try {
+      setGroup(await api.getGroup(groupId));
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  };
 
   useEffect(() => {
     api
@@ -19,6 +29,51 @@ export default function GroupDetailView({ groupId, onBack }: Props) {
       .then(setGroup)
       .catch((err: Error) => setError(err.message));
   }, [groupId]);
+
+  const handleRename = async (member: ImageMeta) => {
+    const requested = window.prompt(
+      `Nuevo nombre para "${member.name}" (sin extensión):`,
+      member.name,
+    );
+    if (!requested || !requested.trim()) {
+      return;
+    }
+    const name = requested.trim();
+    try {
+      const preview = await api.renamePreview(member.id, name);
+      if (!window.confirm(`¿Renombrar a "${preview.newName}"?`)) {
+        return;
+      }
+      setBusyId(member.id);
+      await api.renameImage(member.id, name);
+      setNotice(`"${member.name}" se ha renombrado a "${preview.newName}".`);
+      await reload();
+    } catch (err) {
+      setNotice((err as Error).message);
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const handleTrash = async (member: ImageMeta) => {
+    const confirmed = window.confirm(
+      `¿Enviar "${member.name}" a la Papelera de Windows?\n` +
+        'Podrás recuperarlo desde la Papelera del sistema.',
+    );
+    if (!confirmed) {
+      return;
+    }
+    setBusyId(member.id);
+    try {
+      await api.trashImage(member.id);
+      setNotice(`"${member.name}" se ha enviado a la Papelera.`);
+      await reload();
+    } catch (err) {
+      setNotice((err as Error).message);
+    } finally {
+      setBusyId(null);
+    }
+  };
 
   if (error) {
     return <p className="error">{error}</p>;
@@ -36,6 +91,10 @@ export default function GroupDetailView({ groupId, onBack }: Props) {
         <h2>{categoryLabel(group.category)}</h2>
         <span className="muted">{group.memberCount} archivos</span>
       </div>
+
+      {notice && (
+        <p className={notice.includes('se ha') ? 'ok-message' : 'error'}>{notice}</p>
+      )}
 
       <div className="member-grid">
         {group.members.map((member) => (
@@ -71,11 +130,20 @@ export default function GroupDetailView({ groupId, onBack }: Props) {
               <button type="button" disabled>
                 Conservar
               </button>
-              <button type="button" disabled>
-                Papelera
+              <button
+                type="button"
+                className="danger-outline"
+                disabled={busyId === member.id}
+                onClick={() => handleTrash(member)}
+              >
+                {busyId === member.id ? 'Enviando…' : 'Papelera'}
               </button>
-              <button type="button" disabled>
-                Renombrar
+              <button
+                type="button"
+                disabled={busyId === member.id}
+                onClick={() => handleRename(member)}
+              >
+                {busyId === member.id ? 'Renombrando…' : 'Renombrar'}
               </button>
             </div>
           </div>

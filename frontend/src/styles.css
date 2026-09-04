@@ -338,6 +338,39 @@ input[type='text'] {
   flex-wrap: wrap;
 }
 
+.header-nav {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.ok-message {
+  color: var(--ok);
+}
+
+button.danger-outline {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+button.danger-outline:hover:not(:disabled) {
+  background: #fee2e2;
+}
+
+.badge-rename {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-trash {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+.badge-undo {
+  background: #e9d5ff;
+  color: #6b21a8;
+}
+
 .note {
   font-size: 0.85rem;
   margin-top: 1rem;

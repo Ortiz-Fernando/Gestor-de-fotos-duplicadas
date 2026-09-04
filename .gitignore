@@ -11,6 +11,7 @@ npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
 *.tsbuildinfo
+backend/src/main/resources/static/
 
 # --- IDE ---
 .idea/

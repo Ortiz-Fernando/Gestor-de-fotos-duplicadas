@@ -5,8 +5,8 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Fase actual
 
-**Fase 13 — Optimización (solo si pruebas reales lo demuestran; requiere ADR previo).**
-*Pendiente de decidir — no se optimizará sin medir (AGENTS.md #55).*
+**Fase 15 — Empaquetado Windows:** fat jar integrado y verificado ✅.
+*Opcional pendiente: ejecutable `.exe` con `jpackage` (documentado en `docs/packaging.md`).*
 
 ## Funcionalidades completadas
 
@@ -24,7 +24,10 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 | 9 | Frontend React+TS+Vite: Inicio, Progreso, Resultados, Grupo (UI español) + `GET /api/images/{id}/content`. Build Vite verificado | ✅ |
 | 10 | Comparación/calibración: `CalibrationReportGenerator`, medición con 40 fotos reales, umbrales calibrados (threshold=10, review=17) documentados (ADR D9) | ✅ |
 | 11 | Renombrado seguro: `RenameService` + `RenameController`. Tests (4) en verde | ✅ |
-| 12 | Papelera y operaciones: `DeleteService` (JNA/Shell32 `FOF_ALLOWUNDO`, confirmación explícita, marca IN_TRASH), `OperationService` (historial + Undo de rename, TRASH no automático), `FileTrash`/`WindowsFileTrash`, `OperationController`, `TrashController`. Tests (5 nuevos) en verde | ✅ |
+| 12 | Papelera y operaciones: `DeleteService` (JNA/Shell32), `OperationService` (historial/Undo), `OperationController`, `TrashController`. Tests (5 nuevos) en verde | ✅ |
+| 13 | Optimización: diferida por diseño (sin cuello de botella demostrado; AGENTS #55). Sin cambios | ✅ (documentado) |
+| 14 | Tests finales: suite backend completa (53 tests) en verde + build frontend OK | ✅ |
+| 15 | Empaquetado: acciones de UI activadas (renombrar/papelera/historial), `npm run build:prod` → `static/`, fat jar generado y verificado en `localhost:8080` (UI + API). `jpackage`/`.exe` opcional | ✅ (fat jar); ⏳ exe opcional |
 
 ## Funcionalidades pendientes (plan v1.3)
 

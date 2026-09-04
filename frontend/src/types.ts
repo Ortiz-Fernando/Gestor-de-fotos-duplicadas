@@ -57,3 +57,24 @@ export interface DetectionResult {
   errors: number;
   reclaimableBytes: number;
 }
+
+export interface RenamePreview {
+  imageId: number;
+  currentName: string;
+  currentPath: string;
+  newName: string;
+  newPath: string;
+}
+
+export type OperationType = 'RENAME' | 'MOVE' | 'TRASH' | 'UNDO';
+
+export interface Operation {
+  id: number;
+  type: OperationType;
+  imageId: number | null;
+  sourcePath: string | null;
+  destinationPath: string | null;
+  operationTime: string;
+  reversible: boolean;
+  undoneAt: string | null;
+}
