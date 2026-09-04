@@ -47,8 +47,10 @@ decisiones en curso. Consultar antes de cada sesión de desarrollo.
 
 ## Problemas conocidos
 
-- Git no está instalado en el equipo: no se puede inicializar el repositorio ni crear
-  commits hasta instalarlo (`winget install --id Git.Git -e`).
+- Git CLI no está en el `PATH` del sistema; usar el Git incluido en GitHub Desktop:
+  `C:\Users\cuerv\AppData\Local\GitHubDesktop\app-3.6.4\resources\app\git\cmd\git.exe`.
+  El repositorio está publicado en `origin`
+  (`github.com/Ortiz-Fernando/Gestor-de-fotos-duplicadas.git`, rama `main`).
 - Warnings cosméticos en tests (JDK 24+): `--enable-native-access` para sqlite-jdbc y
   agente Mockito. Sin impacto funcional; se silenciarán al empaquetar (Fase 15).
 
